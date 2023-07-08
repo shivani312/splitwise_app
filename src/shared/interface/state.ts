@@ -37,3 +37,8 @@ export interface INotification {
 	notificationCount: number;
 	data: INotificationData[];
 }
+
+export interface ISortingConfig {
+	sortBy: string;
+	orderBy: string;
+}
