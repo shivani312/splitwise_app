@@ -1,6 +1,7 @@
 import Select, { StylesConfig } from 'react-select';
 import { IDropDownOptions } from '../../interface';
 import { multiReactSelectStyles } from '../../constants/constants';
+import ErrorMessageHandler from '../errorMessageHandler/errorMessageHandler';
 
 interface ISelectDropDownProps {
 	title?: string;
@@ -38,14 +39,15 @@ export const ReactSelect: React.FC<ISelectDropDownProps> = (props) => {
 	} = props;
 
 	return (
-		<div className={['select-field_wrapper', className].join(' ')}>
+		<div className={['select-field_wrapper flex align-items--center width--full', className].join(' ')}>
 			{!!title && (
-				<div className='flex'>
-					<p className={`select-title ${isErrorShow ? 'required-title' : ''} text--grey-100 pb--5`}>
+				<div className='flex width--30'>
+					<p className={`select-title ${isErrorShow ? 'required-title' : ''} text--grey-100 pb--5 mr--10`}>
 						{title}
 					</p>
 				</div>
 			)}
+			<div className='flex flex--column'>
 			<Select
 				styles={multiReactSelectStyles as StylesConfig}
 				value={selectedValue}
@@ -62,6 +64,8 @@ export const ReactSelect: React.FC<ISelectDropDownProps> = (props) => {
 				isSearchable={isSearchable}
 				isClearable={isClearable && !!selectedValue}
 			/>
+			{isErrorShow && <ErrorMessageHandler name={name} />}
+			</div>
 		</div>
 	);
 };

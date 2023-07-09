@@ -3,30 +3,19 @@ import { useNavigate } from 'react-router-dom';
 import { isEmpty } from 'lodash';
 import { v4 as uuidv4 } from 'uuid';
 
-import { IGroup, IUser } from '../interface/expense.interface';
+import { IGroup } from '../interface/expense.interface';
 
 const Group: React.FC = () => {
  
-  const [members, setMembers] = useState<IUser[]>([]);
   const [groups, setGroups] = useState<IGroup>({} as IGroup);
   const navigate = useNavigate();
 
   useEffect(() => {
-    const storedMembers = localStorage.getItem('member');
-    if (storedMembers) {
-      setMembers(JSON.parse(storedMembers));
-    }
-
     const storedGroups = localStorage.getItem('groups');
     if (storedGroups) {
       setGroups(JSON.parse(storedGroups));
     }
   }, []);
-
-
-  useEffect(() => {
-    localStorage.setItem('users', JSON.stringify(members));
-  }, [members]);
 
   useEffect(() => {
     localStorage.setItem('groups', JSON.stringify(groups));
@@ -50,8 +39,6 @@ const Group: React.FC = () => {
     setGroups({...newGroup});
   }, []); 
 
-
-
   return (
     <div className='container'>
       <p className='font-size--30 font--bold text--center mb--20'>Splitwise Application</p>
@@ -65,11 +52,6 @@ const Group: React.FC = () => {
             )
         }
       </div>
-  
-      {/* <h2>Expense Summary</h2>
-      <p>Difference: {calculateSettledExpenses() - calculatePendingExpenses()}</p>
-      <p>Settled Expenses: {calculateSettledExpenses().toFixed(2)}</p>
-      <p>Pending Expenses: {calculatePendingExpenses().toFixed(2)}</p> */}
     </div>
   );
 };

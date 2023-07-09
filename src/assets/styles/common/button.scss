@@ -5,7 +5,7 @@
 	border-radius: 100px;
 	@include padding(5px 18px);
 	transition: all 0.2s linear;
-	color: $black;
+	color: $white;
 
 	&--border {
 		background-color: transparent;
@@ -18,6 +18,10 @@
 		&-white {
 			border: 1px solid #ffffff80;
 		}
+	}
+
+	&--bg{
+		background-color: #008000d1;
 	}
 
 	&--width {
@@ -71,6 +75,7 @@
 		width: 90px;
 		height: 40px;
 		border: 1px solid #ffffff20;
+		color: $black;
 		.icon {
 			width: 15px;
 			height: 15px;

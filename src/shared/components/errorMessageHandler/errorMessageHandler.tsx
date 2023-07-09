@@ -8,7 +8,7 @@ interface IProps {
 const ErrorMessageHandler: React.FC<IProps> = (props) => {
 	const { name } = props;
 	return (
-		<ErrorMessage name={name} component='p' className='text--red-400 font-size--xxs pl--10 error-message mt--10' />
+		<ErrorMessage name={name} component='p' className='text--red font-size--xxs pl--10 error-message mt--5' />
 	);
 };
 

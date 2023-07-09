@@ -1,89 +1,146 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { Form, Formik } from 'formik';
 import { v4 as uuidv4 } from 'uuid';
 import { Modal } from 'antd';
-import { IExpense, IUser } from '../../../features/expenseCard/interface/expense.interface';
+import { useDispatch } from 'react-redux';
+
+import * as actionTypes from '../../../store/actionTypes';
+import { IDropDownOption, IExpense, IUser } from '../../../features/expenseCard/interface/expense.interface';
+import Input from '../input/formikInput';
+import { ReactSelect } from '../dropDown/reactSelect';
+import { createAction, selectedOption } from '../../util/utility';
+import { ExpenseFormValidation } from '../../constants/validationSchema';
 
 interface IProps {
     isModalOpen:boolean;
-    handleCancel:() => void;
-    handleSubmit: () => void;
     onAddExpense: (value: IExpense) => void;
     member: IUser[];
+    closeModel:()=> void;
 }
 
+const initialValue = {
+  description: '',
+  payer: '',
+  participants: [],
+  amount: null
+}
 const ExpenseForm: React.FC<IProps> = (props) => {
-    const {isModalOpen ,handleCancel, handleSubmit ,onAddExpense,member} = props 
+    const {isModalOpen,onAddExpense,member,closeModel} = props 
 
-    const [description, setDescription] = useState('');
-  const [amount, setAmount] = useState('');
-  const [payer, setPayer] = useState('');
-  const [participants, setParticipants] = useState<string[]>([]);
+  const [filters, setFilter] = useState<IDropDownOption[]>([]);
+  const dispatch = useDispatch();
+  
+  useEffect(() => {
+    let filterData: IDropDownOption[] = [];
+   member.length > 0 && member.map((data: IUser) => {
+        filterData.push({
+            label: data.name,
+            value: data.name,
+        });
 
-  const handleAddExpense = () => {
-    if (description && amount && payer && participants.length > 0) {
+        return filterData;
+    });
+    setFilter([...filterData]);
+    // eslint-disable-next-line
+}, []);
+
+  const handleAddExpense = (value: any) => {
+    if (value) {
+      const participantsCount = value.participants.length;
       const newExpense: IExpense = {
         id: uuidv4(),
-        description,
-        amount: parseFloat(amount),
-        payer,
-        participants,
+        description: value.description,
+        amount: parseFloat(value.amount),
+        payer: value.payer,
+        participants: value.participants,
+        createdDate: new Date(),
+        splitAmount: parseFloat((parseFloat(value.amount) / participantsCount).toFixed(2)),
       };
-
-      onAddExpense(newExpense);
-      setDescription('');
-      setAmount('');
-      setPayer('');
-      setParticipants([]);
-    }
+     dispatch(createAction(actionTypes.ADD_EXPENSE, newExpense));
+     onAddExpense(newExpense)
+      }
   };
+
+  const modalFooter = null;
 
   return (
     <>
-      <Modal title="Add Expense" open={isModalOpen} onOk={handleSubmit} onCancel={handleCancel}>
-      <div>
-      <input
-        type="text"
-        placeholder="Expense Description"
-        value={description}
-        onChange={(e) => setDescription(e.target.value)}
-      />
-      <input
-        type="number"
-        placeholder="Expense Amount"
-        value={amount}
-        onChange={(e) => setAmount(e.target.value)}
-      />
-      <select value={payer} onChange={(e) => setPayer(e.target.value)}>
-        <option value="">Select Payer</option>
-        {member.map((user) => (
-          <option key={user.id} value={user.name}>
-            {user.name}
-          </option>
-        ))}
-      </select>
-      {member.length > 0 && (
-        <div>
-          <span>Select Participants: </span>
-          {member.map((user) => (
-            <label key={user.id}>
-              <input
-                type="checkbox"
-                value={user.name}
-                checked={participants.includes(user.name)}
-                onChange={(e) => {
-                  const { checked, value } = e.target;
-                  setParticipants((prevParticipants) =>
-                    checked ? [...prevParticipants, value] : prevParticipants.filter((participant) => participant !== value)
-                  );
-                }}
-              />
-              {user.name}
-            </label>
-          ))}
-        </div>
-      )}
-      <button onClick={handleAddExpense}>Add Expense</button>
-    </div>
+      <Modal title="Add Expense" open={isModalOpen} footer={modalFooter} onCancel={closeModel}>
+
+<Formik
+				initialValues={initialValue}
+				validateOnChange={true}
+				validateOnBlur={true}
+				validationSchema={ExpenseFormValidation}
+				onSubmit={(values, { resetForm }) => {
+          handleAddExpense(values);
+          resetForm();
+          closeModel();
+					}
+				}
+			>
+				{({ setFieldValue, values, errors, validateForm, resetForm }) => (
+					<Form>
+						<div className='form_section flex flex--column align-items--center mt--15 mb--20'>
+						
+											<Input
+												type='text'
+												name='description'
+												className='form_field team-form_field flex align-items--center'
+												autoComplete='off'
+												placeholder='Enter description'
+												value={values.description}
+												title='Description'
+												autoFocus
+												max={40}
+												onChange={(value) => setFieldValue('description', value)}
+												isErrorShow
+											/>
+                      <Input
+												type='number'
+												name='amount'
+												className='form_field team-form_field mt--30 flex align-items--center'
+												autoComplete='off'
+												value={values.amount}
+												placeholder='Enter amount($0.00)'
+												title='Amount'
+												max={20}
+												onChange={(value) => setFieldValue('amount', Number(value))}
+												isErrorShow
+											/>
+											<ReactSelect
+												name='payer'
+												options={filters}
+												placeholder='Select who paid'
+												title='Who paid'
+												selectedValue={selectedOption(filters, values.payer)}
+												onChange={(options: any) => {
+													setFieldValue('payer', options.value);
+												}}
+												className='form_field team-form_field mt--30'
+												isErrorShow
+											/>
+											<ReactSelect
+												name='participants'
+												options={filters}
+												placeholder='Select participants'
+												title='Participants'
+												selectedValue={selectedOption(filters, values.participants)}
+												onChange={(options: any) => {
+													setFieldValue('participants',  options.map((option:IDropDownOption) => option.value));
+												}}
+												className='form_field team-form_field mt--30'
+												isErrorShow
+                        isMulti
+											/>
+
+                      <div className='mt--30'>
+                        <button className='btn btn--bg' type='submit'>Add</button>
+                      </div>
+							</div>
+					</Form>
+				)}
+			</Formik>
       </Modal>
     </>
   );

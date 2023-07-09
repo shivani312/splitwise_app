@@ -1,5 +1,39 @@
+import { ThunkDispatch } from 'redux-thunk';
+import _ from 'lodash';
+
 import { isSafari } from "../constants/constants";
 import { IDropDownOptions } from "../interface";
+import { IAction } from "../interface/state";
+
+/**
+ * create action creator
+ * @param ACTION - type of action
+ * @param data - data
+ */
+export const createAction = (ACTION: string, data: any = null): IAction => ({
+	type: ACTION,
+	payload: data
+});
+
+/**
+ * create loading selector
+ * @param actions - actions to dispatch
+ */
+/**
+ * dispatch action after given time (to handle some events like close modal after success api call)
+ * @param dispatch - dispatch object
+ * @param action - action type
+ * @param time - time after which action is to be dispatched (default - 100ms)
+ */
+export const dispatchActionAfterTime = (
+	dispatch: ThunkDispatch<unknown, unknown, IAction>,
+	action: string,
+	time = 100
+) => {
+	setTimeout(() => {
+		dispatch(createAction(action));
+	}, time);
+};
 
 export const debounce = (func: any, wait = 500) => {
 	let h: NodeJS.Timeout;
@@ -59,4 +93,10 @@ export const selectedOption = (options: IDropDownOptions[], value: string | numb
 		return options.filter((option) => value.includes(option.value as string));
 	}
 	return options.filter((option) => option.value === value);
+};
+
+export const formatValue = (value: string | number | null) => {
+	const formatedValue =
+		value && !value.toString().includes('undefined') && !value.toString().includes('null') ? value : '-';
+	return formatedValue;
 };

@@ -87,9 +87,9 @@ const multiReactSelectStyles = {
 	// none of react-selects styles are passed to <View />
 	container: (base: CSSProperties) => ({
 		...base,
-		height: '55px',
+		height: '40px',
 		fontWeight: '400',
-		// border: '1px solid #464748',
+		border: '1px solid #464748',
 		backgroundColor: '#ffffff',
 		borderRadius: '100px',
 		display: 'flex',
@@ -99,7 +99,7 @@ const multiReactSelectStyles = {
 	placeholder: (base: CSSProperties) => ({
 		...base,
 		fontSize: '14px',
-		color: '#000000'
+		color: '#18191a'
 	}),
 
 	control: (base: CSSProperties) => ({
@@ -136,13 +136,13 @@ const multiReactSelectStyles = {
 	multiValue: (base: CSSProperties) => ({
 		...base,
 		color: '#000000',
-		backgroundColor: '#ed6a29cc',
+		backgroundColor: '#00800033',
 		fontWeight: '500'
 	}),
 
 	multiValueLabel: (base: CSSProperties) => ({
 		...base,
-		color: '#ffffff',
+		color: '#000000',
 		letterSpacing: '1px'
 	}),
 
@@ -150,7 +150,7 @@ const multiReactSelectStyles = {
 		...base,
 		color: '#000000',
 		':hover': {
-			backgroundColor: '#ED6A29'
+			backgroundColor: '#00800033'
 		}
 	}),
 
@@ -163,6 +163,9 @@ const multiReactSelectStyles = {
 		cursor: 'pointer',
 		padding: '0',
 		color: '#808080',
+		':hover': {
+			color: '#808080'
+		}
 	}),
 
 	dropdownIndicator: (base: CSSProperties, state: any) => ({

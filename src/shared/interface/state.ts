@@ -1,8 +1,10 @@
+import { IExpense } from "../../features/expenseCard/interface/expense.interface";
 
 
 export interface IState {
-	loading: ILoadingState;
-	model: IModelState;
+	loading?: ILoadingState;
+	model?: IModelState;
+	expenses:IExpense[];
 }
 
 export interface ILoadingState {

@@ -4,6 +4,8 @@ export interface IExpense {
     amount: number;
     payer: string;
     participants: string[];
+	splitAmount: number;
+	createdDate: any;
 };
 
 export interface IUser {
@@ -17,19 +19,23 @@ export interface IUser {
     members: IUser[]
   }
 
-
+  export interface IDropDownOption {
+	label: string;
+	value: string | number;
+  }
+  
 export const ExpenseListColumns = [
 	{
 		key: 'description',
 		sortable: false,
 		heading: 'Description',
-		className: 'width--12'
+		className: 'width--8'
 	},
     {
 		key: 'payer',
 		sortable: false,
-		heading: 'Payer',
-		className: 'width--12'
+		heading: 'Paid By',
+		className: 'width--7'
 	},
 	{
 		key: 'participant',
@@ -41,7 +47,13 @@ export const ExpenseListColumns = [
 		key: 'amount',
 		sortable: false,
 		heading: 'Amount',
-		className: 'width--12'
+		className: 'width--7'
+	},
+	{
+		key: 'createdDate',
+		sortable: false,
+		heading: 'Created On',
+		className: 'width--7'
 	},
 	{
 		key: 'hr',
@@ -52,7 +64,7 @@ export const ExpenseListColumns = [
 	{
 		key: 'options',
 		sortable: false,
-		heading: '',
+		heading: 'Action',
 		className: 'width--10'
 	}
 ];

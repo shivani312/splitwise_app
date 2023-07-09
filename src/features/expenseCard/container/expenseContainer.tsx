@@ -21,18 +21,21 @@ const Expense:React.FC =() => {
     localStorage.setItem('expenses', JSON.stringify(expenses));
   }, [expenses]);
 
-console.log(expenses,'expenses');
   const handleAddExpense = (expense: IExpense) => {
     setExpenses([...expenses, expense]);
   };
 
-  const handleSettleExpense = (expenseId: string) => {
-    setExpenses((prevExpenses) =>
-      prevExpenses.map((expense) =>
-        expense.id === expenseId ? { ...expense, participants: [expense.payer] } : expense
-      )
-    );
-  };
+  // const handleSettleExpense = (expenseId: string) => {
+  //   setExpenses((prevExpenses) =>
+  //     prevExpenses.map((expense) =>
+  //       expense.id === expenseId ? { ...expense, participants: [expense.payer] } : expense
+  //     )
+  //   );
+  // };
+
+const closeModel = () => {
+  setIsModalOpen(false);
+}
 
   // const calculateSettledExpenses = (): number => {
   //   const settledExpenses = expenses.filter((expense) => expense.participants.length === 1);
@@ -50,13 +53,13 @@ console.log(expenses,'expenses');
         <button className="btn back-btn" onClick={() => navigate(-1)}>Back</button>
         <div className="flex align-items--center justify-content--between mb--30">
           <p className="font--semi-bold">Expense List</p>
-          <button className="btn bg--grey-50 font--bold" onClick={() => setIsModalOpen(true)}>Add Expense</button>
+          <button className="btn btn--bg font--bold" onClick={() => setIsModalOpen(true)}>Add Expense</button>
         </div>
-          <ExpenseList expenses={expenses} onSettleExpense={handleSettleExpense} />
+          <ExpenseList expenses={expenses}/>
         </div>
         {
           isModalOpen && (
-            <ExpenseForm isModalOpen={isModalOpen} handleCancel={() =>setIsModalOpen(false)} handleSubmit={() => console.log('in')} member={state?.members} onAddExpense={handleAddExpense}/>
+            <ExpenseForm isModalOpen={isModalOpen} member={state?.members} onAddExpense={handleAddExpense} closeModel={closeModel}/>
           )
         }
         </>
