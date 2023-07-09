@@ -1,14 +1,15 @@
 import { useEffect, useState } from "react";
-
-import ExpenseList from "../component/expenseList";
 import { useLocation, useNavigate } from 'react-router-dom';
+import { connect } from "react-redux";
+import { ThunkDispatch } from "redux-thunk";
+
 import ExpenseForm from "../../../shared/components/modal/expenseFormModal";
 import { IExpense } from "../interface/expense.interface";
-import { ThunkDispatch } from "redux-thunk";
 import * as CommonActions from '../../../store/common.action';
 import { IAction, IState } from "../../../shared/interface/state";
-import { connect } from "react-redux";
- 
+
+import ExpenseList from "../component/expenseList";
+
 const Expense:React.FC =() => {
     const [expenses, setExpenses] = useState<IExpense[]>([]);
     const [isModalOpen,setIsModalOpen] = useState(false);
@@ -29,27 +30,9 @@ const Expense:React.FC =() => {
     setExpenses([...expenses, expense]);
   };
 
-  // const handleSettleExpense = (expenseId: string) => {
-  //   setExpenses((prevExpenses) =>
-  //     prevExpenses.map((expense) =>
-  //       expense.id === expenseId ? { ...expense, participants: [expense.payer] } : expense
-  //     )
-  //   );
-  // };
-
 const closeModel = () => {
   setIsModalOpen(false);
 }
-
-  // const calculateSettledExpenses = (): number => {
-  //   const settledExpenses = expenses.filter((expense) => expense.participants.length === 1);
-  //   return settledExpenses.reduce((total, expense) => total + expense.amount, 0);
-  // };
-
-  // const calculatePendingExpenses = (): number => {
-  //   const pendingExpenses = expenses.filter((expense) => expense.participants.length > 1);
-  //   return pendingExpenses.reduce((total, expense) => total + expense.amount, 0);
-  // };
 
     return (
         <>

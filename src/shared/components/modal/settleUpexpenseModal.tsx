@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-
 import { Modal } from 'antd';
+
 import { IExpense, IParticipants } from '../../../features/expenseCard/interface/expense.interface';
 
 interface IProps {
@@ -13,7 +13,6 @@ const SettleUpExpense: React.FC<IProps> = (props) => {
     const {isModalOpen,closeModel,expenseId} = props 
 	const [expense,setExpense] = useState<IExpense[]>([]);
 	const [confirmName,setIsConfirmName] = useState('');
-	// const [resetAmounts, setResetAmounts] = useState(false);
 	const [expenseDetails,setExpenseDetails] = useState<IExpense>();
 	const modalFooter = null;
 
