@@ -24,6 +24,16 @@
 		background-color: #008000d1;
 	}
 
+	&--color {
+		color: $black;
+	}
+
+	&--small {
+		height: 35px;
+		border-radius: 10px;
+		// @include padding(5px 10px)
+	}
+
 	&--width {
 		width: auto;
 

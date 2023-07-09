@@ -8,7 +8,6 @@ const initialState: IState = {
 };
 
 const expenseReducer = (state = initialState, action:any) => {
-  console.log(action,state,'action')
   switch (action.type) {
     case ADD_EXPENSE:
       return {

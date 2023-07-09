@@ -46,14 +46,22 @@ const ExpenseForm: React.FC<IProps> = (props) => {
 
   const handleAddExpense = (value: any) => {
     if (value) {
+	const data : any= [];
       const participantsCount = value.participants.length;
+		value.participants.map((name:string) => (
+		data.push({
+		name: name,
+		splitAmount: parseFloat((parseFloat(value.amount) / participantsCount).toFixed(2))		
+			})
+		))
       const newExpense: IExpense = {
         id: uuidv4(),
         description: value.description,
         amount: parseFloat(value.amount),
         payer: value.payer,
-        participants: value.participants,
+        participants: data,
         createdDate: new Date(),
+		isSettled:false,
         splitAmount: parseFloat((parseFloat(value.amount) / participantsCount).toFixed(2)),
       };
      dispatch(createAction(actionTypes.ADD_EXPENSE, newExpense));
@@ -96,7 +104,7 @@ const ExpenseForm: React.FC<IProps> = (props) => {
 												onChange={(value) => setFieldValue('description', value)}
 												isErrorShow
 											/>
-                      <Input
+                      						<Input
 												type='number'
 												name='amount'
 												className='form_field team-form_field mt--30 flex align-items--center'
@@ -131,13 +139,13 @@ const ExpenseForm: React.FC<IProps> = (props) => {
 												}}
 												className='form_field team-form_field mt--30'
 												isErrorShow
-                        isMulti
+                        						isMulti
 											/>
 
-                      <div className='mt--30'>
-                        <button className='btn btn--bg' type='submit'>Add</button>
-                      </div>
-							</div>
+											<div className='mt--30'>
+												<button className='btn btn--bg' type='submit'>Add</button>
+											</div>
+											</div>
 					</Form>
 				)}
 			</Formik>

@@ -3,11 +3,15 @@ export interface IExpense {
     description: string;
     amount: number;
     payer: string;
-    participants: string[];
+    participants: IParticipants[];
 	splitAmount: number;
 	createdDate: any;
+	isSettled: boolean;
 };
-
+export interface IParticipants {
+	name: string;
+	splitAmount:number
+}
 export interface IUser {
     id: string;
     name: string;

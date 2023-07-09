@@ -4,6 +4,10 @@ import ExpenseList from "../component/expenseList";
 import { useLocation, useNavigate } from 'react-router-dom';
 import ExpenseForm from "../../../shared/components/modal/expenseFormModal";
 import { IExpense } from "../interface/expense.interface";
+import { ThunkDispatch } from "redux-thunk";
+import * as CommonActions from '../../../store/common.action';
+import { IAction, IState } from "../../../shared/interface/state";
+import { connect } from "react-redux";
  
 const Expense:React.FC =() => {
     const [expenses, setExpenses] = useState<IExpense[]>([]);
@@ -66,4 +70,14 @@ const closeModel = () => {
     )
 
 }
-export default Expense
+
+interface IDispatchProps {
+  addExpense: (expense: IExpense) => void;
+}
+const mapDispatchToProps = (dispatch: ThunkDispatch<any, any, IAction>): IDispatchProps => {
+	return {
+    addExpense: (expense: IExpense) => dispatch(CommonActions.addExpense(expense))
+	};
+};
+
+export default connect<any, IDispatchProps, any, IState>(null, mapDispatchToProps)(Expense);
