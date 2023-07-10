@@ -27,7 +27,7 @@ const Group: React.FC = () => {
       {id:'2',name:'Sapna'},
       {id:'3',name:'Kinjal'},
       {id:'4',name:'Om'},
-      {id:'5',name:'Foram'}
+      {id:'5',name:'Foram'},
       {id:'6',name:'Shruti'}
     ];
     const groupId = uuidv4();
