@@ -1,19 +1,11 @@
 // expenseReducer.js
 
-import { IState } from "../shared/interface/state";
 import { ADD_EXPENSE } from "./actionTypes";
 
-const initialState: IState = {
-    expenses: [],
-};
-
-const expenseReducer = (state = initialState, action:any) => {
+const expenseReducer = (state = [], action: any) => {
   switch (action.type) {
     case ADD_EXPENSE:
-      return {
-        ...state,
-        expenses: [...state.expenses, action.payload]
-      };
+      return action.payload
     default:
       return state;
   }
